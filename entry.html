@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<title>Hello...</title>
+<style type="text/css">
+#mainContent {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	background-color: #E3F0FB;
+	border-radius: 4px;
+	padding: 10px;
+	text-align: center;
+}
+.buttonStyle {
+	border-radius: 4px;
+	border: thin solid #F0E020;
+	padding: 5px;
+	background-color: #F8F094;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	color: #663300;
+	width: 75px;
+}
+
+.buttonStyle:hover {
+	border: thin solid #FFCC00;
+	background-color: #FCF9D6;
+	color: #996633;
+	cursor: pointer;
+}
+.buttonStyle:active {
+	border: thin solid #99CC00;
+	background-color: #F5FFD2;
+	color: #669900;
+	cursor: pointer;
+}
+
+</style>
+<script src="Ggg.js"></script>
+</head>
+
+<body>
+<div id="mainContent">
+<div> <button id="compileButton" class="buttonStyle">Compile</button><p id="comment">?</p></div>
+<textarea id="GggSource" cols="50" rows="10"></textarea>
+<textarea id="JsSource" cols="50" rows="10"></textarea>
+<div><button id="runButton" class="buttonStyle">Run</button></div>
+<textarea id="input" cols="50" rows="3"></textarea>
+<textarea id="output" cols="50" rows="10"></textarea>
+</div>
+<script>
+    var comment = document.getElementById("comment");
+
+    document.getElementById("compileButton").addEventListener('click', compileGgg, false)
+    document.getElementById("runButton").addEventListener('click', runJavascript, false)
+
+    function compileGgg() {
+        var lexer = new window.Ggg.Lexer();
+        var syntaxChecker = new window.Ggg.SyntaxChecker();
+        var compiler = new window.Ggg.Compiler();        
+        
+        var code = document.getElementById("GggSource").value;
+        var tokens = lexer.Analyze(code);
+        
+        if (!lexer.HasError()) {
+            syntaxChecker.CheckSyntax(tokens);
+            if (!syntaxChecker.HasError()) {                
+                var jsCode = compiler.Compile(tokens);
+                comment.textContent = "Ok.";
+                document.getElementById("JsSource").value = jsCode;
+            } else {
+                comment.textContent = syntaxChecker.GetError();
+            }
+            
+        } else {
+            comment.textContent = lexer.GetError();
+        }
+    }
+    
+    function runJavascript() {
+        var jsCode = document.getElementById("JsSource").value;
+        var input = document.getElementById("input");
+        var output = document.getElementById("output");
+        
+        function read() {
+            if (input.value.length > 0) {
+                return input.value[0];
+            } else {
+                return "q";
+            }
+        }
+        
+        function write(char) {
+            output.value += char;
+        }
+        
+        eval(jsCode);
+        runProgram(read, write);
+    }
+</script>
+
+</body>
+</html>
