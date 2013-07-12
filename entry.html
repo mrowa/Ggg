@@ -52,31 +52,21 @@
 <textarea id="output" cols="50" rows="10"></textarea>
 </div>
 <script>
-    var comment = document.getElementById("comment");
 
     document.getElementById("compileButton").addEventListener('click', compileGgg, false)
     document.getElementById("runButton").addEventListener('click', runJavascript, false)
 
     function compileGgg() {
-        var lexer = new window.Ggg.Lexer();
-        var syntaxChecker = new window.Ggg.SyntaxChecker();
-        var compiler = new window.Ggg.Compiler();        
-        
+    
         var code = document.getElementById("GggSource").value;
-        var tokens = lexer.Analyze(code);
         
-        if (!lexer.HasError()) {
-            syntaxChecker.CheckSyntax(tokens);
-            if (!syntaxChecker.HasError()) {                
-                var jsCode = compiler.Compile(tokens);
-                comment.textContent = "Ok.";
-                document.getElementById("JsSource").value = jsCode;
-            } else {
-                comment.textContent = syntaxChecker.GetError();
-            }
-            
+        var interpreter = new window.Ggg.Interpreter();
+        var result = interpreter.Interpret(code);
+        if (result.ok) {
+            document.getElementById("JsSource").value = result.js;            
+            document.getElementById("comment").textContent = "It's ok";
         } else {
-            comment.textContent = lexer.GetError();
+            document.getElementById("comment").textContent = result.error;
         }
     }
     
@@ -84,7 +74,7 @@
         var jsCode = document.getElementById("JsSource").value;
         var input = document.getElementById("input");
         var output = document.getElementById("output");
-        
+                
         function read() {
             if (input.value.length > 0) {
                 return input.value[0];
@@ -97,8 +87,9 @@
             output.value += char;
         }
         
-        eval(jsCode);
-        runProgram(read, write);
+        var interpreter = new window.Ggg.Interpreter();
+        interpreter.RegisterIO(read, write);
+        interpreter.Run(jsCode);        
     }
 </script>
 

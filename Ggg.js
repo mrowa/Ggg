@@ -163,7 +163,52 @@
             
             Program += "}\n";
             return Program;
-        };      
+        };
+    };
+    
+    Ggg.Interpreter = function() {        
+        var readFunction = function() { console.log("Read function undeclared."); };
+        var writeFunction = function() { console.log("Write function undeclared."); };
+        
+        var runProgram = function() {
+            console.log("Program not provided.");
+            alert("There is no program to run.");
+        };
+        
+        this.Interpret = function(code) {            
+            var lexer = new Ggg.Lexer();
+            var syntaxChecker = new Ggg.SyntaxChecker();
+            var compiler = new Ggg.Compiler();        
+            
+            var tokens = lexer.Analyze(code);
+        
+            if (!lexer.HasError()) {
+                syntaxChecker.CheckSyntax(tokens);
+                if (!syntaxChecker.HasError()) {                
+                    var jsCode = compiler.Compile(tokens);
+                    return { ok: true, js: jsCode };
+                } else {
+                    return { ok: false, error: syntaxChecker.GetError() };
+                }
+                
+            } else {
+                return { ok: false, error: lexer.GetError() };
+            }
+        };
+        
+        this.RegisterIO = function(readFunc, writeFunc) {
+            if (typeof(readFunc) == "function") {
+                readFunction = readFunc;
+            }
+            if (typeof(writeFunc) == "function") {
+                writeFunction = writeFunc;    
+            }            
+        };
+        
+        this.Run = function(js) {
+            eval(js);
+            runProgram(readFunction, writeFunction);
+        };
     };
     
 })(window.Ggg = window.Ggg || {});
