@@ -64,43 +64,42 @@
     };
     
     Ggg.SyntaxChecker = function() {
-        // Error literals
-        var ggMissessGGError = "Syntax error: gg misses its corresponding GG";
-        var GGMissessggError = "Syntax error: GG misses its corresponding gg";
-        var GGBeforeggError = "Syntax error: GG is before first gg";
-        var ggAfterGGError = "Syntax error: gg is after last GG";
+        // Error literals    
+        var GGTooEarlyError = "Syntax error: There is GG without corresponding, previous gg";
+        var TooManyGGError = "Syntax error: GG lacks corresponding gg";
+        var TooManyggError = "Syntax error: gg lacks corresponding GG";
         
         // Properties variables
         var Error;
         var ErrorText;
         
         this.CheckSyntax = function (tokens) {
-            var ggIndex = tokens.indexOf("gg");
-            var GGIndex = tokens.indexOf("GG");
             
-            if (ggIndex === -1 && GGIndex === -1) {
-                return;
-            } else {
-                if (GGIndex === -1) {
-                    // show error
-                    // gg misses its corresponding GG
-                    SetError(ggMissessGGError);
-                } else if (ggIndex === -1) {
-                    // show error
-                    // GG misses it corresponding gg
-                    SetError(GGMissessggError);
-                } else if (ggIndex > GGIndex) {
-                    //show error
-                    // there is GG before gg
-                    SetError(GGBeforeggError);
-                } else {
-                    ggIndex = tokens.lastIndexOf("gg");
-                    GGIndex = tokens.lastIndexOf("GG");
-                    
-                    if (GGIndex < ggIndex) {
-                        // show error
-                        // there is gg after GG
-                        SetError(ggAfterGGError);
+            var level = 0;
+            
+            for (var i = 0; i < tokens.length; ++i) {
+                var token = tokens[i];
+                console.log("token" + token);
+                
+                switch (token) {
+                    case "gg":
+                        level++;
+                        break;
+                    case "GG":
+                        level--;
+                        break;
+                }
+                if (level < 0) {
+                    SetError(GGTooEarlyError);
+                }
+            }
+            
+            if (!this.HasError()) {
+                if (level !== 0) {
+                    if (level > 0) {
+                        SetError(TooManyggError);
+                    } else { 
+                        SetError(TooManyGGError);
                     }
                 }
             }

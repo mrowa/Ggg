@@ -106,11 +106,11 @@
                 
         function read() {
             if (input.value.length > 0) {
-                var char = input.value[0];
+                var char = input.value.charCodeAt(0);
                 input.value = input.value.substring(1);
                 return char;
             } else {
-                return "q";
+                return "q".charCodeAt(0);
             }
         }
         
