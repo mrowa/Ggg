@@ -44,7 +44,7 @@
 
 <body>
 <div id="mainContent">
-<div> <button id="compileButton" class="buttonStyle">Compile</button><p id="comment">?</p></div>
+<div> <button id="compileButton" class="buttonStyle">Compile</button><div><button id="sampleHelloWorld" class="buttonStyle">sample (hello world)</button></div><p id="comment">?</p></div>
 <textarea id="GggSource" cols="50" rows="10"></textarea>
 <textarea id="JsSource" cols="50" rows="10"></textarea>
 <div><button id="runButton" class="buttonStyle">Run</button></div>
@@ -53,8 +53,37 @@
 </div>
 <script>
 
-    document.getElementById("compileButton").addEventListener('click', compileGgg, false)
-    document.getElementById("runButton").addEventListener('click', runJavascript, false)
+    var HelloWorldCode = 
+    "G G G G G  G G G G G" + "\n" +
+    "gg" + "\n" +
+    "gG G G G G G  G G" + "\n" +
+    "gG G G G G G  G G G G G" + "\n" +
+    "gG G G G" + "\n" +
+    "gG G" + "\n" +
+    "Gg Gg Gg Gg g" + "\n" +
+    "GG" + "\n" +
+    "\n" +
+    "gG G G GGG" + "\n" +
+    "gG G GGG" + "\n" +
+    "G G G G G  G G GGG" + "\n" +
+    "GGG" + "\n" +
+    "G G G GGG" + "\n" +
+    "gG G G GGG" + "\n" +
+    "Gg Gg G G G G G  G G G G G  G G G G G GGG" + "\n" +
+    "gG GGG" + "\n" +
+    "G G G GGG" + "\n" +
+    "g g g g g  g GGG" + "\n" +
+    "g g g g g  g g g GGG" + "\n" +
+    "gG G GGG" + "\n" +
+    "gG GGG" + "\n";
+
+    document.getElementById("compileButton").addEventListener('click', compileGgg, false);
+    document.getElementById("runButton").addEventListener('click', runJavascript, false);
+    document.getElementById("sampleHelloWorld").addEventListener('click', setHelloWorld, false);
+    
+    function setHelloWorld() {
+        document.getElementById("GggSource").value = HelloWorldCode;
+    }
 
     function compileGgg() {
     
@@ -77,14 +106,16 @@
                 
         function read() {
             if (input.value.length > 0) {
-                return input.value[0];
+                var char = input.value[0];
+                input.value = input.value.substring(1);
+                return char;
             } else {
                 return "q";
             }
         }
         
-        function write(char) {
-            output.value += char;
+        function write(charCode) {
+            output.value += String.fromCharCode(charCode);
         }
         
         var interpreter = new window.Ggg.Interpreter();

@@ -121,8 +121,6 @@
     };
     
     Ggg.Compiler = function() {
-        // Literals - index is a code.
-        var Symbols = ["g", "G", "gg", "gG", "Gg", "GG", "ggg", "GGG"];         
         
         this.Compile = function(tokens) {
             var Program = 
@@ -147,7 +145,7 @@
                         Program += "ptr--;" + "\n";
                         break;
                     case "gg":
-                        Program += "while(ptr !== 0) {" + "\n";
+                        Program += "while(memory[ptr] !== 0) {" + "\n";
                         break;
                     case "GG":
                         Program += "};" + "\n";
