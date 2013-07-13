@@ -119,41 +119,56 @@
         };
     };
     
-    Ggg.Compiler = function() {
+    Ggg.Compiler = function() {    
         
         this.Compile = function(tokens) {
-            var Program = 
-            "function runProgram(read, write) {" + "\n" +
-            "   var memory = [];" + "\n" +
-            "   for (var i = 0; i < 30000; ++i) { memory[i] = 0; };" + "\n" +
-            "   var ptr = 0" + "\n";
+            var level = 0;
+            var Program = "";
             
+            function add(code) {
+                for (var l = 0; l < level; ++l) {
+                    Program += "    ";
+                }
+                Program += code + "\n";
+            }
+            
+            add("function runProgram(read, write) {");
+            level++;
+            add("var memory = [];");
+            add("for (var i = 0; i < 30000; ++i)");
+            add("{");
+            add("memory[i] = 0;");
+            add("};");
+            add("var ptr = 0");
+            add("");
             
             for (var i = 0; i < tokens.length; ++i) {
                 switch(tokens[i]) {
                     case "g":
-                        Program += "memory[ptr]--;" + "\n";
+                        add("memory[ptr]--;");
                         break;
                     case "G":
-                        Program += "memory[ptr]++;" + "\n";
+                        add("memory[ptr]++;");
                         break;                        
                     case "gG":
-                        Program += "ptr++;" + "\n";
+                        add("ptr++;");
                         break;
                     case "Gg":
-                        Program += "ptr--;" + "\n";
+                        add("ptr--;");
                         break;
                     case "gg":
-                        Program += "while(memory[ptr] !== 0) {" + "\n";
+                        add("while(memory[ptr] !== 0) {");
+                        level++;
                         break;
                     case "GG":
-                        Program += "};" + "\n";
+                        level--;
+                        add("};");
                         break;
                     case "ggg":
-                        Program += "memory[ptr] = read();" + "\n";
+                        add("memory[ptr] = read();");
                         break;
                     case "GGG":
-                        Program += "write(memory[ptr]);" + "\n";
+                        add("write(memory[ptr]);");
                         break;
                 }
             }
