@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Ggg by mrowa</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/mrowa/Ggg">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/mrowa/Ggg/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/mrowa/Ggg/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Ggg</h1>
+          <p>Ggg Language spec and Ggg to javascript compiler</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/mrowa">mrowa</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>Ggg programming language &amp; interpreter</p>
+
+<p>To test compiler, go <a href="/entry">here</a></p>
+
+<p>Ggg is programming language built on top of brainfuck, which is built on top of
+<code>P′′</code> programming language. It's very simple with just a few constructs and
+symbols. Main reason of creation of this language is extending of brainfuck with
+some quite needed features.</p>
+
+<p>Valid symbols:
+Symbols in tokens: <code>G</code>, <code>g</code>, other characters are used to break sets of symbols into tokens.</p>
+
+<p>In Ggg version g there are 8 basic commands which are also only valid tokens, based on those from brainfuck:</p>
+
+<p><code>G</code>   as <code>+</code> (increment byte)</p>
+
+<p><code>g</code>   as <code>-</code> (decrement byte)</p>
+
+<p><code>gG</code>  as <code>&gt;</code> (increment pointer, go right)</p>
+
+<p><code>Gg</code>  as <code>&lt;</code> (decrement pointer, go left)</p>
+
+<p><code>gg</code>  as <code>[</code> (if data byte zero, jump to forward <code>GG</code>)</p>
+
+<p><code>GG</code>  as <code>]</code> (if data byte nonzero, jump backward to <code>gg</code>)</p>
+
+<p><code>GGG</code> as <code>.</code> (output byte)</p>
+
+<p><code>ggg</code> as <code>,</code> (input byte)</p>
+
+<p>Commands should be divided by other characters or whitespace (including line
+feed). Minimal requirement for the compilable program: </p>
+
+<ul>
+<li>there is either <code>gg</code> and <code>GG</code> in order, either there are none of those commands 
+in the code. There is no need for having a parity of those tokens, only 
+the order and having at least one <code>gg</code> and <code>GG</code> is needed. Programs breaking 
+this rule would not compile. Not adhering to the rule results with
+syntax error.</li>
+<li>there are no symbols containing <code>g</code> and <code>G</code> without other characters that are also
+not a command. So in Ggg g the symbol <code>gGg</code> is illegal and creates compilation
+error, similar situation is with longer chains of <code>g</code>s and <code>G</code>s, like <code>gggg</code>.
+Not adhering to the rule results with lexical error.</li>
+</ul><p>Ggg is extensible, so there is possibility to add more commands, like declaring 
+constants.
+Proposed additional functionalities:</p>
+
+<ul>
+<li> Integer literals</li>
+<li> Simple macros</li>
+<li> Different I/O functions</li>
+</ul><p>Ggg G integer literals known as g-binary
+Literals are created using symbols g and G as one word without any other
+characters inbetween. G symbol means g-binary 1 and g symbol means g-binary 0.
+Scheme for creating integer g-binary literal:
+g-binary-command address g-binary-value
+Both address and g-binary-value can contain any number of (reasonable)
+values, including not paired gg and GG.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
