@@ -81,10 +81,12 @@
     document.getElementById("runButton").addEventListener('click', runJavascript, false);
     document.getElementById("sampleHelloWorld").addEventListener('click', setHelloWorld, false);
     
+    // Put sample Ggg code in Ggg source place
     function setHelloWorld() {
         document.getElementById("GggSource").value = HelloWorldCode;
     }
 
+    // Compile Ggg to javascript
     function compileGgg() {
     
         var code = document.getElementById("GggSource").value;
@@ -99,25 +101,30 @@
         }
     }
     
+    // Run compiled Ggg code
     function runJavascript() {
         var jsCode = document.getElementById("JsSource").value;
         var input = document.getElementById("input");
         var output = document.getElementById("output");
                 
+        // Read one input character
         function read() {
             if (input.value.length > 0) {
                 var char = input.value.charCodeAt(0);
                 input.value = input.value.substring(1);
                 return char;
             } else {
+                // if empty, read "q"
                 return "q".charCodeAt(0);
             }
         }
         
+        // Write character to output
         function write(charCode) {
             output.value += String.fromCharCode(charCode);
         }
         
+        //Run the thing
         var interpreter = new window.Ggg.Interpreter();
         interpreter.RegisterIO(read, write);
         interpreter.Run(jsCode);        

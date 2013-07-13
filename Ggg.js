@@ -2,6 +2,9 @@
 
 (function(Ggg, undefined) {
     
+    // Lexical analyzer
+    // Checks if all symbols in source code are legal, prepares tokens
+    // from source code.
     Ggg.Lexer = function() {        
         // Literals
         var LegalSymbols = ["g", "G", "gg", "gG", "Gg", "GG", "ggg", "GGG"];
@@ -63,6 +66,7 @@
         };
     };
     
+    // Checks syntax of Ggg code using prepared tokens.
     Ggg.SyntaxChecker = function() {
         // Error literals    
         var GGTooEarlyError = "Syntax error: There is GG without corresponding, previous gg";
@@ -73,6 +77,8 @@
         var Error;
         var ErrorText;
         
+        // Check if syntax is ok. Read results using HasError function
+        // if it's true, there is something to be aware of.
         this.CheckSyntax = function (tokens) {
             
             var level = 0;
@@ -81,6 +87,7 @@
                 var token = tokens[i];
                 console.log("token" + token);
                 
+                // count levels of gg and GG
                 switch (token) {
                     case "gg":
                         level++;
@@ -94,6 +101,7 @@
                 }
             }
             
+            // checks if error, otherwise one SetError would get overwritten
             if (!this.HasError()) {
                 if (level !== 0) {
                     if (level > 0) {
@@ -119,12 +127,15 @@
         };
     };
     
+    // Compiles Ggg tokens to javascript
     Ggg.Compiler = function() {    
         
+        // Compile tokens (ordered array of strings) to javascript
         this.Compile = function(tokens) {
             var level = 0;
             var Program = "";
             
+            // Add line with indentation and newline
             function add(code) {
                 for (var l = 0; l < level; ++l) {
                     Program += "    ";
@@ -132,7 +143,8 @@
                 Program += code + "\n";
             }
             
-            add("function runProgram(read, write) {");
+            // Beginning of program
+            add("Ggg.Runner.runProgram = function (read, write) {");
             level++;
             add("var memory = [];");
             add("for (var i = 0; i < 30000; ++i)");
@@ -142,6 +154,7 @@
             add("var ptr = 0");
             add("");
             
+            // Create code
             for (var i = 0; i < tokens.length; ++i) {
                 switch(tokens[i]) {
                     case "g":
@@ -178,7 +191,9 @@
         };
     };
     
-    Ggg.Interpreter = function() {        
+    // Run Ggg code with IO
+    Ggg.Interpreter = function() {
+        // Default functions provided in case of generic problems
         var readFunction = function() { console.log("Read function undeclared."); };
         var writeFunction = function() { console.log("Write function undeclared."); };
         
@@ -187,6 +202,8 @@
             alert("There is no program to run.");
         };
         
+        // Interprets Ggg using text Ggg code, returns object
+        // { ok: true/false, js: code (if ok == true), error: error (if not ok)}
         this.Interpret = function(code) {            
             var lexer = new Ggg.Lexer();
             var syntaxChecker = new Ggg.SyntaxChecker();
@@ -202,12 +219,12 @@
                 } else {
                     return { ok: false, error: syntaxChecker.GetError() };
                 }
-                
             } else {
                 return { ok: false, error: lexer.GetError() };
             }
         };
         
+        // Register readFunc and writeFunc
         this.RegisterIO = function(readFunc, writeFunc) {
             if (typeof(readFunc) == "function") {
                 readFunction = readFunc;
@@ -217,9 +234,16 @@
             }            
         };
         
+        // Prepare object to run function from
+        var PrepareFunctionSpace = function() {
+            Ggg.Runner = {};
+        }
+        
+        // Run ready function all at once.
         this.Run = function(js) {
+            PrepareFunctionSpace();
             eval(js);
-            runProgram(readFunction, writeFunction);
+            Ggg.Runner.runProgram(readFunction, writeFunction);
         };
     };
     
