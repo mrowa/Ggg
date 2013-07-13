@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<title>Hello...</title>
+<style type="text/css">
+#mainContent {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	background-color: #E3F0FB;
+	border-radius: 4px;
+	padding: 10px;
+	//text-align: center;
+}
+.status {
+    font-family: monospace;
+}
+.buttonStyle {
+	border-radius: 4px;
+	border: thin solid #F0E020;
+	padding: 5px;
+	background-color: #F8F094;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	color: #663300;
+	min-width: 75px;
+}
+
+.buttonStyle:hover {
+	border: thin solid #FFCC00;
+	background-color: #FCF9D6;
+	color: #996633;
+	cursor: pointer;
+}
+.buttonStyle:active {
+	border: thin solid #99CC00;
+	background-color: #F5FFD2;
+	color: #669900;
+	cursor: pointer;
+}
+
+</style>
+<script src="Ggg.js"></script>
+</head>
+
+<body>
+    <div id="mainContent">
+
+        <p>Ggg programming language &amp; interpreter</p>
+        
+        <p>To test compiler, go <a href="/index">here</a>.</p>
+
+<p>Ggg is programming language built on top of brainfuck, which is built on top of
+<code>P′′</code> programming language. It's very simple with just a few constructs and
+symbols. Main reason of creation of this language is extending of brainfuck with
+some quite needed features.</p>
+
+<p>Valid symbols:
+Symbols in tokens: <code>G</code>, <code>g</code>, other characters are used to break sets of symbols into tokens.</p>
+
+<p>In Ggg version g there are 8 basic commands which are also only valid tokens, based on those from brainfuck:</p>
+
+<p><code>G</code>   as <code>+</code> (increment byte)</p>
+
+<p><code>g</code>   as <code>-</code> (decrement byte)</p>
+
+<p><code>gG</code>  as <code>&gt;</code> (increment pointer, go right)</p>
+
+<p><code>Gg</code>  as <code>&lt;</code> (decrement pointer, go left)</p>
+
+<p><code>gg</code>  as <code>[</code> (if data byte zero, jump to forward <code>GG</code>)</p>
+
+<p><code>GG</code>  as <code>]</code> (if data byte nonzero, jump backward to <code>gg</code>)</p>
+
+<p><code>GGG</code> as <code>.</code> (output byte)</p>
+
+<p><code>ggg</code> as <code>,</code> (input byte)</p>
+
+<p>Commands should be divided by other characters or whitespace (including line
+feed). Minimal requirement for the compilable program: 
+- there is either <code>gg</code> and <code>GG</code> in order, either there are none of those commands 
+    in the code. There is no need for having a parity of those tokens, only 
+    the order and having at least one <code>gg</code> and <code>GG</code> is needed. Programs breaking 
+    this rule would not compile. Not adhering to the rule results with
+    syntax error.
+- there are no symbols containing <code>g</code> and <code>G</code> without other characters that are also
+    not a command. So in Ggg g the symbol <code>gGg</code> is illegal and creates compilation
+    error, similar situation is with longer chains of <code>g</code>s and <code>G</code>s, like <code>gggg</code>.
+    Not adhering to the rule results with lexical error.</p>
+
+<p>Ggg is extensible, so there is possibility to add more commands, like declaring 
+constants.
+Proposed additional functionalities:
+ -  Integer literals
+ -  Simple macros
+ -  Different I/O functions</p>
+
+<p>Ggg G integer literals known as g-binary
+Literals are created using symbols g and G as one word without any other
+characters inbetween. G symbol means g-binary 1 and g symbol means g-binary 0.
+Scheme for creating integer g-binary literal:
+g-binary-command address g-binary-value
+Both address and g-binary-value can contain any number of (reasonable)
+values, including not paired gg and GG.</p>
+
+</body>
+</html>

@@ -53,6 +53,3 @@ g-binary-command address g-binary-value
 Both address and g-binary-value can contain any number of (reasonable)
 values, including not paired gg and GG.
 
-Issues:
-- improper gg GG definition (do we need GOTO or loops?)
-- Interpreter and Read/write code in entry.html
